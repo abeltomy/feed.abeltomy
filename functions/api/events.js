@@ -52,7 +52,7 @@ export async function onRequestPost({ request, env }) {
       headers: { ...headers, 'Content-Type': 'application/json' },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
+    return new Response(JSON.stringify({ error: e.message, token_set: !!env.GITHUB_TOKEN, repo: env.GITHUB_REPO }), {
       status: 502,
       headers: { ...headers, 'Content-Type': 'application/json' },
     });
