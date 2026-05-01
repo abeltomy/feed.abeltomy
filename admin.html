@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — feed.abeltomy.com</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-brand">feed.abeltomy.com</a>
+    <a href="/" class="nav-link">← Timeline</a>
+  </nav>
+
+  <main class="admin-main">
+    <div class="admin-layout">
+
+      <!-- Sidebar: event form -->
+      <aside class="admin-sidebar">
+        <h2 class="admin-section-title" id="form-heading">New Event</h2>
+        <form id="event-form" autocomplete="off">
+          <input type="hidden" id="ev-id">
+
+          <div class="field">
+            <label for="ev-date">Date</label>
+            <input type="date" id="ev-date" required>
+          </div>
+
+          <div class="field">
+            <label for="ev-title">Title</label>
+            <input type="text" id="ev-title" required placeholder="What happened?">
+          </div>
+
+          <div class="field">
+            <label for="ev-category">Category</label>
+            <select id="ev-category">
+              <option value="life">Life</option>
+              <option value="work">Work</option>
+              <option value="travel">Travel</option>
+              <option value="creative">Creative</option>
+              <option value="milestone">Milestone</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="ev-description">Description</label>
+            <textarea id="ev-description" rows="4" placeholder="Optional details..."></textarea>
+          </div>
+
+          <div class="field">
+            <label>Media</label>
+            <div class="upload-zone" id="upload-zone">
+              <input type="file" id="file-input" accept="image/*,video/*" multiple hidden>
+              Drop files or <button type="button" id="browse-btn">browse</button>
+            </div>
+            <div class="upload-previews" id="upload-previews"></div>
+          </div>
+
+          <div class="field">
+            <label>Links</label>
+            <div id="links-list"></div>
+            <button type="button" class="btn-ghost" id="add-link-btn" style="font-size:0.8rem;padding:0.3rem 0.75rem;margin-top:0.3rem">+ Add link</button>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="submit-btn">Add Event</button>
+            <button type="button" class="btn-ghost" id="cancel-btn" style="display:none">Cancel</button>
+          </div>
+
+          <div id="form-status"></div>
+        </form>
+      </aside>
+
+      <!-- Main: event list -->
+      <div class="admin-list">
+        <h2 class="admin-section-title">Events <span id="event-count"></span></h2>
+        <div id="admin-timeline"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

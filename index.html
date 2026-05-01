@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>feed.abeltomy.com</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-brand">feed.abeltomy.com</a>
+    <a href="/admin.html" class="nav-link">Admin</a>
+  </nav>
+
+  <main>
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-cat="all">All</button>
+      <button class="filter-btn" data-cat="life">Life</button>
+      <button class="filter-btn" data-cat="work">Work</button>
+      <button class="filter-btn" data-cat="travel">Travel</button>
+      <button class="filter-btn" data-cat="creative">Creative</button>
+      <button class="filter-btn" data-cat="milestone">Milestone</button>
+    </div>
+
+    <div id="timeline"></div>
+  </main>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">&times;</button>
+    <div class="lightbox-content" id="lightbox-content"></div>
+  </div>
+
+  <script src="js/timeline.js"></script>
+</body>
+</html>

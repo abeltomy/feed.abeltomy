@@ -1,0 +1,17 @@
+name = "feed-abeltomy"
+pages_build_output_dir = "."
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "feed-abeltomy-media"
+
+[vars]
+GITHUB_REPO  = "abeltomy/feed.abeltomy"
+EVENTS_PATH  = "events.json"
+SITE_URL     = "https://feed.abeltomy.com"
+ALLOWED_ORIGIN = "https://feed.abeltomy.com"
+
+# Secrets — set via CLI before first deploy:
+#   wrangler pages secret put GITHUB_TOKEN
