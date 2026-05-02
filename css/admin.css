@@ -48,7 +48,7 @@
 .field select,
 .field textarea {
   width: 100%;
-  font-family: 'Lora', serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.9rem;
   padding: 0.55rem 0.75rem;
   background: var(--surface);
@@ -97,7 +97,7 @@
 }
 
 .upload-zone button {
-  font-family: 'Lora', serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: none;
   border: none;
   color: var(--accent);
@@ -129,7 +129,7 @@
 
 .preview-caption {
   width: 100%;
-  font-family: 'Lora', serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.72rem;
   padding: 0.2rem 0.35rem;
   border: 1px solid var(--border);
@@ -169,7 +169,7 @@
 }
 
 .link-row input {
-  font-family: 'Lora', serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.85rem;
   padding: 0.4rem 0.6rem;
   border: 1px solid var(--border);
@@ -202,7 +202,7 @@
 
 /* Buttons */
 .btn-primary {
-  font-family: 'Lora', serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.9rem;
   padding: 0.6rem 1.5rem;
   background: var(--text);
@@ -224,7 +224,7 @@
 }
 
 .btn-ghost {
-  font-family: 'Lora', serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.85rem;
   padding: 0.5rem 1rem;
   background: none;
@@ -291,7 +291,7 @@
 
 .btn-edit,
 .btn-delete {
-  font-family: 'Lora', serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.78rem;
   padding: 0.3rem 0.65rem;
   border-radius: 4px;
