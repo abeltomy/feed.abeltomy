@@ -1,6 +1,34 @@
 {
   "events": [
     {
+      "id": "6f1c479d-ca41-41cb-8ae4-5c62a4bccb7d",
+      "date": "2025-09-13",
+      "title": "Climbed Skierfe Peak",
+      "location": "Norrbotten, Sweden",
+      "description": "With Swerim Mafia",
+      "media": [
+        {
+          "url": "https://feed.abeltomy.com/media/1777722691651-pz44xuc.jpg",
+          "type": "photo",
+          "caption": "",
+          "key": "1777722691651-pz44xuc.jpg"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777722691967-l818ev2.jpg",
+          "type": "photo",
+          "caption": "",
+          "key": "1777722691967-l818ev2.jpg"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777722692406-g61n0jw.mp4",
+          "type": "video",
+          "caption": "",
+          "key": "1777722692406-g61n0jw.mp4"
+        }
+      ],
+      "links": []
+    },
+    {
       "id": "3e14e8da-8006-4ca3-9fb9-1b77c22635a9",
       "date": "2023-07-12",
       "title": "Ran With the Bulls",
