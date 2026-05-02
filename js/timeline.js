@@ -47,15 +47,12 @@ function render() {
 
   const years = Object.keys(byYear).sort((a, b) => b - a);
 
-  timeline.innerHTML = years
-    .map(
-      year => `
-      <div class="year-group">
-        <div class="year-label">${year}</div>
-        ${byYear[year].map(renderEvent).join('')}
-      </div>`
-    )
-    .join('');
+  const cards = years.flatMap(year => [
+    `<div class="year-divider"><span>${year}</span></div>`,
+    ...byYear[year].map(renderEvent)
+  ]);
+
+  timeline.innerHTML = `<div class="timeline-scroll">${cards.join('')}</div>`;
 }
 
 document.getElementById('year-filter').addEventListener('change', function () {
@@ -93,16 +90,13 @@ function renderEvent(ev) {
 
   return `
     <div class="event">
-      <div class="event-date">
-        <span class="event-month">${month}</span>
-        <span class="event-day">${day}</span>
-      </div>
-      <div class="event-body">
+      ${mediaHtml ? `<div class="event-media">${mediaHtml}</div>` : ''}
+      <div class="event-info">
+        <div class="event-dateline"><span class="event-month">${month}</span> <span class="event-day">${day}</span></div>
         ${dateRangeHtml}
         <div class="event-title">${h(ev.title)}</div>
         ${ev.location ? `<div class="event-location">📍 ${h(ev.location)}</div>` : ''}
         ${ev.description ? `<div class="event-description">${h(ev.description)}</div>` : ''}
-        ${mediaHtml ? `<div class="event-media">${mediaHtml}</div>` : ''}
         ${linksHtml ? `<div class="event-links">${linksHtml}</div>` : ''}
       </div>
     </div>`;
