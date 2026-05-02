@@ -1,3 +1,26 @@
 {
-  "events": []
+  "events": [
+    {
+      "id": "385b4f40-af50-4b03-957c-d25193a4feab",
+      "date": "2025-07-10",
+      "title": "Did some bull shit",
+      "category": "life",
+      "description": "",
+      "media": [
+        {
+          "url": "https://feed.abeltomy.com/media/1777715648948-dotzrl4.png",
+          "type": "photo",
+          "caption": "",
+          "key": "1777715648948-dotzrl4.png"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777715656223-of60wcg.mov",
+          "type": "video",
+          "caption": "",
+          "key": "1777715656223-of60wcg.mov"
+        }
+      ],
+      "links": []
+    }
+  ]
 }
