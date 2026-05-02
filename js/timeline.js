@@ -61,7 +61,7 @@ function renderEvent(ev) {
   const mediaHtml = (ev.media || [])
     .map(m => {
       if (m.type === 'video') {
-        return `<video src="${h(m.url)}" muted playsinline title="${h(m.caption || '')}" onclick="openLightbox('video','${h(m.url)}')"></video>`;
+        return `<video src="${h(m.url)}" muted playsinline preload="metadata" title="${h(m.caption || '')}" onloadedmetadata="this.currentTime=0.1" onclick="openLightbox('video','${h(m.url)}')"></video>`;
       }
       return `<img src="${h(m.url)}" alt="${h(m.caption || ev.title)}" loading="lazy" onclick="openLightbox('image','${h(m.url)}')">`;
     })
