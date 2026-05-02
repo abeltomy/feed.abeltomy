@@ -100,6 +100,7 @@ function renderEvent(ev) {
       <div class="event-body">
         ${dateRangeHtml}
         <div class="event-title">${h(ev.title)}</div>
+        ${ev.location ? `<div class="event-location">📍 ${h(ev.location)}</div>` : ''}
         ${ev.description ? `<div class="event-description">${h(ev.description)}</div>` : ''}
         ${mediaHtml ? `<div class="event-media">${mediaHtml}</div>` : ''}
         ${linksHtml ? `<div class="event-links">${linksHtml}</div>` : ''}

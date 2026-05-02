@@ -4,11 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>feed.abeltomy.com</title>
+  <link rel="icon" href="https://media.cnn.com/api/v1/images/stellar/prod/141208164806-instagram-logo.png?q=w_510,h_510,x_0,y_0,c_fill" type="image/png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <nav>
-    <a href="/" class="nav-brand">feed.abeltomy.com</a>
+    <a href="/" class="nav-brand">
+      <img src="https://media.cnn.com/api/v1/images/stellar/prod/141208164806-instagram-logo.png?q=w_510,h_510,x_0,y_0,c_fill" alt="" class="nav-icon">
+      feed.abeltomy.com
+    </a>
     <div class="nav-right">
       <a href="/admin.html" class="nav-link">Admin</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
@@ -36,7 +40,7 @@
       }
     })();
   </script>
-  <script src="js/timeline.js?v=7"></script>
+  <script src="js/timeline.js?v=8"></script>
   <script>
     document.getElementById('theme-toggle').addEventListener('click', function () {
       const night = document.body.classList.toggle('night');
