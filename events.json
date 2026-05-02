@@ -1,29 +1,6 @@
 {
   "events": [
     {
-      "id": "385b4f40-af50-4b03-957c-d25193a4feab",
-      "date": "2025-07-10",
-      "title": "Did some bull shit",
-      "category": "life",
-      "description": "",
-      "media": [
-        {
-          "url": "https://feed.abeltomy.com/media/1777715648948-dotzrl4.png",
-          "type": "photo",
-          "caption": "yooyooo",
-          "key": "1777715648948-dotzrl4.png"
-        },
-        {
-          "url": "https://feed.abeltomy.com/media/1777715656223-of60wcg.mov",
-          "type": "video",
-          "caption": "holaaa",
-          "key": "1777715656223-of60wcg.mov"
-        }
-      ],
-      "links": [],
-      "archived": false
-    },
-    {
       "id": "3e14e8da-8006-4ca3-9fb9-1b77c22635a9",
       "date": "2023-07-12",
       "title": "Ran With the Bulls",
