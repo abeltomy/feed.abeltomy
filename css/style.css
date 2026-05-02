@@ -233,8 +233,8 @@ nav {
 
 .event-media img,
 .event-media video {
-  flex: 0 0 130px;
-  height: 160px;
+  flex: 0 0 clamp(110px, 42vw, 160px);
+  height: clamp(135px, 52vw, 200px);
   object-fit: cover;
   border-radius: 4px;
   cursor: pointer;
