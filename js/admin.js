@@ -68,7 +68,6 @@ function startEdit(id) {
   document.getElementById('ev-date').value         = ev.date;
   document.getElementById('ev-end-date').value     = ev.endDate || '';
   document.getElementById('ev-title').value        = ev.title;
-  document.getElementById('ev-category').value     = ev.category;
   document.getElementById('ev-description').value  = ev.description || '';
 
   mediaItems = (ev.media  || []).map(m => ({ ...m }));
@@ -166,7 +165,6 @@ document.getElementById('event-form').addEventListener('submit', async e => {
       date:        document.getElementById('ev-date').value,
       ...(endDate ? { endDate } : {}),
       title:       document.getElementById('ev-title').value.trim(),
-      category:    document.getElementById('ev-category').value,
       description: document.getElementById('ev-description').value.trim(),
       media:       mediaItems.map(({ file, _blobUrl, ...rest }) => rest),
       links:       linkItems.filter(l => l.url.trim()),

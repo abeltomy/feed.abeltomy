@@ -182,7 +182,7 @@ nav {
 /* Media */
 .event-media {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 0.4rem;
   margin-bottom: 0.6em;
 }
@@ -190,7 +190,7 @@ nav {
 .event-media img,
 .event-media video {
   width: 100%;
-  height: 100px;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: 4px;
   cursor: pointer;
