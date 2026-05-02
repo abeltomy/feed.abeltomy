@@ -35,15 +35,18 @@ function renderList() {
     .map(ev => {
       const d = new Date(ev.date + 'T00:00:00');
       const dateStr = `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+      const archived = ev.archived ? ' admin-event--archived' : '';
+      const archiveLabel = ev.archived ? 'Unarchive' : 'Archive';
       return `
-        <div class="admin-event">
+        <div class="admin-event${archived}">
           <div>
-            <div class="admin-event-meta">${dateStr} &middot; ${h(ev.category)}</div>
+            <div class="admin-event-meta">${dateStr} &middot; ${h(ev.category)}${ev.archived ? ' &middot; archived' : ''}</div>
             <div class="admin-event-title">${h(ev.title)}</div>
           </div>
           <div class="admin-event-actions">
-            <button class="btn-edit"   onclick="startEdit('${h(ev.id)}')">Edit</button>
-            <button class="btn-delete" onclick="confirmDelete('${h(ev.id)}')">Delete</button>
+            <button class="btn-edit"    onclick="startEdit('${h(ev.id)}')">Edit</button>
+            <button class="btn-archive" onclick="toggleArchive('${h(ev.id)}')">${archiveLabel}</button>
+            <button class="btn-delete"  onclick="confirmDelete('${h(ev.id)}')">Delete</button>
           </div>
         </div>`;
     })
@@ -115,6 +118,21 @@ async function confirmDelete(id) {
   } catch (e) {
     setStatus('Delete failed: ' + e.message, 'err');
     await loadEvents(); // resync
+  }
+}
+
+// ── Archive ───────────────────────────────────────────────────────────────────
+
+async function toggleArchive(id) {
+  const ev = events.find(e => e.id === id);
+  if (!ev) return;
+  ev.archived = !ev.archived;
+  try {
+    await saveEvents();
+    renderList();
+  } catch (e) {
+    setStatus('Archive failed: ' + e.message, 'err');
+    await loadEvents();
   }
 }
 
