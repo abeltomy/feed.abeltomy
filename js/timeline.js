@@ -3,7 +3,6 @@ const EVENTS_URL = '/api/events';
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 let allEvents = [];
-let activeFilter = 'all';
 
 async function loadEvents() {
   try {
@@ -19,20 +18,15 @@ async function loadEvents() {
 }
 
 function render() {
-  const filtered =
-    activeFilter === 'all'
-      ? allEvents
-      : allEvents.filter(e => e.category === activeFilter);
-
   const timeline = document.getElementById('timeline');
 
-  if (!filtered.length) {
+  if (!allEvents.length) {
     timeline.innerHTML = '<p class="empty">No events yet.</p>';
     return;
   }
 
   const byYear = {};
-  for (const ev of filtered) {
+  for (const ev of allEvents) {
     const year = new Date(ev.date + 'T00:00:00').getFullYear();
     (byYear[year] = byYear[year] || []).push(ev);
   }
@@ -115,15 +109,6 @@ document.getElementById('lightbox').addEventListener('click', function (e) {
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
-});
-
-document.getElementById('filters').addEventListener('click', e => {
-  const btn = e.target.closest('.filter-btn');
-  if (!btn) return;
-  activeFilter = btn.dataset.cat;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  render();
 });
 
 loadEvents();
