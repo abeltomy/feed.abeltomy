@@ -89,6 +89,27 @@ nav {
   padding: 0;
 }
 
+/* Toolbar */
+.toolbar {
+  margin-bottom: 1.5em;
+}
+
+.year-select {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.6rem;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+
+.year-select:focus {
+  border-color: var(--text-muted);
+}
+
 /* Year group */
 .year-group {
   margin-bottom: 2.5em;

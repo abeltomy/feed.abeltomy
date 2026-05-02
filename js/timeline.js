@@ -3,6 +3,7 @@ const EVENTS_URL = '/api/events';
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 let allEvents = [];
+let activeYear = 'all';
 
 async function loadEvents() {
   try {
@@ -10,6 +11,7 @@ async function loadEvents() {
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     allEvents = (data.events || []).filter(e => !e.archived).sort((a, b) => new Date(b.date) - new Date(a.date));
+    populateYearFilter();
     render();
   } catch {
     document.getElementById('timeline').innerHTML =
@@ -17,16 +19,28 @@ async function loadEvents() {
   }
 }
 
+function populateYearFilter() {
+  const years = [...new Set(allEvents.map(e => new Date(e.date + 'T00:00:00').getFullYear()))].sort((a, b) => b - a);
+  const sel = document.getElementById('year-filter');
+  years.forEach(y => {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    sel.appendChild(opt);
+  });
+}
+
 function render() {
   const timeline = document.getElementById('timeline');
+  const filtered = activeYear === 'all' ? allEvents : allEvents.filter(e => new Date(e.date + 'T00:00:00').getFullYear() === Number(activeYear));
 
-  if (!allEvents.length) {
+  if (!filtered.length) {
     timeline.innerHTML = '<p class="empty">No events yet.</p>';
     return;
   }
 
   const byYear = {};
-  for (const ev of allEvents) {
+  for (const ev of filtered) {
     const year = new Date(ev.date + 'T00:00:00').getFullYear();
     (byYear[year] = byYear[year] || []).push(ev);
   }
@@ -43,6 +57,11 @@ function render() {
     )
     .join('');
 }
+
+document.getElementById('year-filter').addEventListener('change', function () {
+  activeYear = this.value;
+  render();
+});
 
 function renderEvent(ev) {
   const start = new Date(ev.date + 'T00:00:00');
