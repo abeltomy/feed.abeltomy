@@ -233,10 +233,10 @@ nav {
 
 .event-media img,
 .event-media video {
-  flex: 0 0 100%;
-  aspect-ratio: 4 / 5;
+  flex: 0 0 130px;
+  height: 160px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   display: block;
   scroll-snap-align: start;
