@@ -158,6 +158,14 @@ nav {
   display: block;
 }
 
+.event-range {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 0.15em;
+  letter-spacing: 0.02em;
+}
+
 .event-title {
   font-weight: 700;
   font-size: 0.95rem;

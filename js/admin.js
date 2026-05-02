@@ -66,6 +66,7 @@ function startEdit(id) {
 
   document.getElementById('ev-id').value           = ev.id;
   document.getElementById('ev-date').value         = ev.date;
+  document.getElementById('ev-end-date').value     = ev.endDate || '';
   document.getElementById('ev-title').value        = ev.title;
   document.getElementById('ev-category').value     = ev.category;
   document.getElementById('ev-description').value  = ev.description || '';
@@ -85,6 +86,7 @@ function cancelEdit() {
   document.getElementById('submit-btn').textContent   = 'Add Event';
   document.getElementById('cancel-btn').style.display = 'none';
   document.getElementById('event-form').reset();
+  document.getElementById('ev-end-date').value = '';
   mediaItems = [];
   linkItems  = [];
   renderPreviews();
@@ -158,9 +160,11 @@ document.getElementById('event-form').addEventListener('submit', async e => {
       }
     }
 
+    const endDate = document.getElementById('ev-end-date').value;
     const ev = {
       id:          editingId || crypto.randomUUID(),
       date:        document.getElementById('ev-date').value,
+      ...(endDate ? { endDate } : {}),
       title:       document.getElementById('ev-title').value.trim(),
       category:    document.getElementById('ev-category').value,
       description: document.getElementById('ev-description').value.trim(),

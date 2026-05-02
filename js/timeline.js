@@ -45,9 +45,18 @@ function render() {
 }
 
 function renderEvent(ev) {
-  const d = new Date(ev.date + 'T00:00:00');
-  const month = MONTHS[d.getMonth()];
-  const day = String(d.getDate()).padStart(2, '0');
+  const start = new Date(ev.date + 'T00:00:00');
+  const month = MONTHS[start.getMonth()];
+  const day   = String(start.getDate()).padStart(2, '0');
+
+  let dateRangeHtml = '';
+  if (ev.endDate) {
+    const end = new Date(ev.endDate + 'T00:00:00');
+    const endMonth = MONTHS[end.getMonth()];
+    const endDay   = String(end.getDate()).padStart(2, '0');
+    const sameMonth = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+    dateRangeHtml = `<span class="event-range">${sameMonth ? `${day}–${endDay} ${month}` : `${day} ${month} – ${endDay} ${endMonth}`}</span>`;
+  }
 
   const mediaHtml = (ev.media || [])
     .map(m => {
@@ -70,7 +79,7 @@ function renderEvent(ev) {
         <span class="event-day">${day}</span>
       </div>
       <div class="event-body">
-        <span class="event-category cat-${h(ev.category)}">${h(ev.category)}</span>
+        ${dateRangeHtml}
         <div class="event-title">${h(ev.title)}</div>
         ${ev.description ? `<div class="event-description">${h(ev.description)}</div>` : ''}
         ${mediaHtml ? `<div class="event-media">${mediaHtml}</div>` : ''}
