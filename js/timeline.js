@@ -1,5 +1,4 @@
-const EVENTS_URL =
-  'https://raw.githubusercontent.com/abeltomy/feed.abeltomy/main/events.json';
+const EVENTS_URL = '/api/events';
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -8,7 +7,7 @@ let activeFilter = 'all';
 
 async function loadEvents() {
   try {
-    const res = await fetch(EVENTS_URL + '?t=' + Date.now());
+    const res = await fetch(EVENTS_URL);
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     allEvents = (data.events || []).sort((a, b) => new Date(b.date) - new Date(a.date));
