@@ -1,22 +1,6 @@
 {
   "events": [
     {
-      "id": "3eaa75a5-eb76-4a7f-af15-c02e5862e31d",
-      "date": "2026-05-08",
-      "title": "fsfvds",
-      "category": "life",
-      "description": "sfdsf",
-      "media": [
-        {
-          "url": "https://feed.abeltomy.com/media/1777633995104-15f807t.png",
-          "type": "photo",
-          "caption": "",
-          "key": "1777633995104-15f807t.png"
-        }
-      ],
-      "links": []
-    },
-    {
       "id": "ce1855e8-edc8-47ee-86bf-42985ce4d5c5",
       "date": "2026-05-03",
       "title": "gdgd",
