@@ -268,18 +268,12 @@ async function addMediaItem(file) {
     || /\.(heic|heif)$/i.test(file.name));
 
   if (isHeic) {
-    if (typeof heic2any !== 'function') {
-      setStatus('HEIC library not loaded — refresh and try again.', 'err');
-      return;
-    }
     setStatus('Converting HEIC…');
     try {
-      let result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.82 });
-      const blob = Array.isArray(result) ? result[0] : result;
-      file = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+      file = await convertHeic(file);
       setStatus('');
     } catch (e) {
-      setStatus('HEIC conversion failed: ' + e.message, 'err');
+      setStatus('Could not convert HEIC: ' + e.message, 'err');
       return;
     }
   }
@@ -293,6 +287,43 @@ async function addMediaItem(file) {
 async function processImage(file) {
   // HEIC already converted to JPEG in addMediaItem — just compress
   return await compressImage(file);
+}
+
+async function convertHeic(file) {
+  // Try native browser decoding first (Safari has built-in HEIC codec)
+  const native = await tryNativeDecode(file);
+  if (native) return native;
+  // Fallback: heic2any (libheif-based, fails on some HEIC variants)
+  if (typeof heic2any !== 'function') throw new Error('conversion library not loaded');
+  let result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.82 });
+  const blob = Array.isArray(result) ? result[0] : result;
+  return new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+}
+
+function tryNativeDecode(file) {
+  return new Promise(resolve => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const MAX = 1920;
+      let { naturalWidth: w, naturalHeight: h } = img;
+      if (w > MAX || h > MAX) {
+        if (w >= h) { h = Math.round(h * MAX / w); w = MAX; }
+        else        { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      canvas.toBlob(blob => {
+        resolve(blob
+          ? new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' })
+          : null);
+      }, 'image/jpeg', 0.82);
+    };
+    img.src = url;
+  });
 }
 
 function compressImage(file) {
