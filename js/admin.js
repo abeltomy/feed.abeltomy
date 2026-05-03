@@ -234,10 +234,11 @@ uploadZone.addEventListener('drop', async e => {
 });
 
 async function addMediaItem(file) {
-  if (!file.type.startsWith('video/')) {
-    file = await processImage(file);
+  const isVideo = file.type.startsWith('video/') || /\.(mp4|mov|webm|avi)$/i.test(file.name);
+  if (!isVideo) {
+    try { file = await processImage(file); } catch { /* use original on any error */ }
   }
-  const type    = file.type.startsWith('video/') ? 'video' : 'photo';
+  const type    = isVideo ? 'video' : 'photo';
   const blobUrl = URL.createObjectURL(file);
   mediaItems.push({ file, url: blobUrl, _blobUrl: blobUrl, type, caption: '' });
   renderPreviews();
@@ -247,7 +248,7 @@ async function processImage(file) {
   const isHeic = file.type === 'image/heic' || file.type === 'image/heif'
     || /\.(heic|heif)$/i.test(file.name);
 
-  if (isHeic) {
+  if (isHeic && typeof heic2any === 'function') {
     const blob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.82 });
     file = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
   }
@@ -256,9 +257,10 @@ async function processImage(file) {
 }
 
 function compressImage(file) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const img = new Image();
     const src = URL.createObjectURL(file);
+    img.onerror = () => { URL.revokeObjectURL(src); reject(new Error('img load failed')); };
     img.onload = () => {
       URL.revokeObjectURL(src);
       const MAX = 1920;
@@ -272,6 +274,7 @@ function compressImage(file) {
       canvas.height = height;
       canvas.getContext('2d').drawImage(img, 0, 0, width, height);
       canvas.toBlob(blob => {
+        if (!blob) return reject(new Error('canvas toBlob failed'));
         resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
       }, 'image/jpeg', 0.82);
     };
