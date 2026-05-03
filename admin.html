@@ -50,7 +50,7 @@
           <div class="field">
             <label>Media</label>
             <div class="upload-zone" id="upload-zone">
-              <input type="file" id="file-input" accept="image/*,video/*" multiple hidden>
+              <input type="file" id="file-input" accept="image/*,video/*,.heic,.heif" multiple hidden>
               Drop files or <button type="button" id="browse-btn">browse</button>
             </div>
             <div class="upload-previews" id="upload-previews"></div>
@@ -80,6 +80,7 @@
     </div>
   </main>
 
-  <script src="js/admin.js?v=2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+  <script src="js/admin.js?v=3"></script>
 </body>
 </html>

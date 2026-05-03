@@ -217,8 +217,8 @@ const uploadZone = document.getElementById('upload-zone');
 
 document.getElementById('browse-btn').addEventListener('click', () => fileInput.click());
 
-fileInput.addEventListener('change', () => {
-  Array.from(fileInput.files).forEach(addMediaItem);
+fileInput.addEventListener('change', async () => {
+  for (const file of fileInput.files) await addMediaItem(file);
   fileInput.value = '';
 });
 
@@ -227,17 +227,56 @@ uploadZone.addEventListener('dragover', e => {
   uploadZone.classList.add('drag-over');
 });
 uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop', e => {
+uploadZone.addEventListener('drop', async e => {
   e.preventDefault();
   uploadZone.classList.remove('drag-over');
-  Array.from(e.dataTransfer.files).forEach(addMediaItem);
+  for (const file of e.dataTransfer.files) await addMediaItem(file);
 });
 
-function addMediaItem(file) {
-  const type     = file.type.startsWith('video/') ? 'video' : 'photo';
-  const blobUrl  = URL.createObjectURL(file);
+async function addMediaItem(file) {
+  if (!file.type.startsWith('video/')) {
+    file = await processImage(file);
+  }
+  const type    = file.type.startsWith('video/') ? 'video' : 'photo';
+  const blobUrl = URL.createObjectURL(file);
   mediaItems.push({ file, url: blobUrl, _blobUrl: blobUrl, type, caption: '' });
   renderPreviews();
+}
+
+async function processImage(file) {
+  const isHeic = file.type === 'image/heic' || file.type === 'image/heif'
+    || /\.(heic|heif)$/i.test(file.name);
+
+  if (isHeic) {
+    const blob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.82 });
+    file = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+  }
+
+  return await compressImage(file);
+}
+
+function compressImage(file) {
+  return new Promise(resolve => {
+    const img = new Image();
+    const src = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(src);
+      const MAX = 1920;
+      let { width, height } = img;
+      if (width > MAX || height > MAX) {
+        if (width >= height) { height = Math.round(height * MAX / width); width = MAX; }
+        else { width = Math.round(width * MAX / height); height = MAX; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      canvas.toBlob(blob => {
+        resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
+      }, 'image/jpeg', 0.82);
+    };
+    img.src = src;
+  });
 }
 
 function renderPreviews() {
