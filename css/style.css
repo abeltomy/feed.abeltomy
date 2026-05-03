@@ -168,6 +168,7 @@ nav {
   border-left: 1px solid var(--line);
   padding-left: 1em;
   position: relative;
+  min-width: 0;
 }
 
 .event-body::before {
