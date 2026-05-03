@@ -264,6 +264,26 @@ uploadZone.addEventListener('drop', async e => {
 
 async function addMediaItem(file) {
   const isVideo = file.type.startsWith('video/') || /\.(mp4|mov|webm|avi)$/i.test(file.name);
+  const isHeic  = !isVideo && (file.type === 'image/heic' || file.type === 'image/heif'
+    || /\.(heic|heif)$/i.test(file.name));
+
+  if (isHeic) {
+    if (typeof heic2any !== 'function') {
+      setStatus('HEIC library not loaded — refresh and try again.', 'err');
+      return;
+    }
+    setStatus('Converting HEIC…');
+    try {
+      let result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.82 });
+      const blob = Array.isArray(result) ? result[0] : result;
+      file = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+      setStatus('');
+    } catch (e) {
+      setStatus('HEIC conversion failed: ' + e.message, 'err');
+      return;
+    }
+  }
+
   const type    = isVideo ? 'video' : 'photo';
   const blobUrl = URL.createObjectURL(file);
   mediaItems.push({ file, url: blobUrl, _blobUrl: blobUrl, type, caption: '' });
@@ -271,14 +291,7 @@ async function addMediaItem(file) {
 }
 
 async function processImage(file) {
-  const isHeic = file.type === 'image/heic' || file.type === 'image/heif'
-    || /\.(heic|heif)$/i.test(file.name);
-
-  if (isHeic && typeof heic2any === 'function') {
-    const blob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.82 });
-    file = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
-  }
-
+  // HEIC already converted to JPEG in addMediaItem — just compress
   return await compressImage(file);
 }
 
