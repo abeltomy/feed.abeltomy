@@ -224,6 +224,8 @@ nav {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
   margin-bottom: 0.75em;
   border-radius: 6px;
 }
@@ -241,6 +243,14 @@ nav {
   display: block;
   scroll-snap-align: start;
   transition: opacity 0.15s;
+}
+
+@media (max-width: 600px) {
+  .event-media img,
+  .event-media video {
+    flex: 0 0 72vw;
+    height: 54vw;
+  }
 }
 
 .event-media img:hover,
