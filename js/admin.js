@@ -150,14 +150,20 @@ document.getElementById('event-form').addEventListener('submit', async e => {
 
   try {
     // Upload any pending local files
-    const pending = mediaItems.filter(i => i.file);
-    const total = pending.length;
+    const total = mediaItems.filter(i => i.file).length;
     let done = 0;
-    if (total) setProgress(0, `Uploading 1 of ${total}…`);
 
     for (const item of mediaItems) {
       if (item.file) {
-        const { url, key } = await uploadFile(item.file, p => {
+        const isVideo = item.file.type.startsWith('video/') || /\.(mp4|mov|webm|avi)$/i.test(item.file.name);
+        let fileToUpload = item.file;
+        if (!isVideo) {
+          setStatus(`Compressing ${done + 1} of ${total}…`);
+          try { fileToUpload = await processImage(item.file); } catch { /* use original */ }
+        }
+        setProgress(done / total, `Uploading ${done + 1} of ${total}…`);
+        setStatus('Saving…');
+        const { url, key } = await uploadFile(fileToUpload, p => {
           setProgress((done + p) / total, `Uploading ${done + 1} of ${total}…`);
         });
         item.url = url;
@@ -165,7 +171,6 @@ document.getElementById('event-form').addEventListener('submit', async e => {
         delete item.file;
         if (item._blobUrl) { URL.revokeObjectURL(item._blobUrl); delete item._blobUrl; }
         done++;
-        if (done < total) setProgress(done / total, `Uploading ${done + 1} of ${total}…`);
       }
     }
     setProgress(null);
@@ -259,11 +264,6 @@ uploadZone.addEventListener('drop', async e => {
 
 async function addMediaItem(file) {
   const isVideo = file.type.startsWith('video/') || /\.(mp4|mov|webm|avi)$/i.test(file.name);
-  if (!isVideo) {
-    uploadZone.classList.add('compressing');
-    try { file = await processImage(file); } catch { /* use original on any error */ }
-    uploadZone.classList.remove('compressing');
-  }
   const type    = isVideo ? 'video' : 'photo';
   const blobUrl = URL.createObjectURL(file);
   mediaItems.push({ file, url: blobUrl, _blobUrl: blobUrl, type, caption: '' });
