@@ -1,6 +1,59 @@
 {
   "events": [
     {
+      "id": "239410f4-32bf-40ba-b16c-ae082f31979f",
+      "date": "2025-12-14",
+      "endDate": "2026-05-20",
+      "title": "Karthiks bachelor party",
+      "location": "Thailand",
+      "description": "With Karthik & Aravind",
+      "media": [
+        {
+          "url": "https://feed.abeltomy.com/media/1777789958222-c6dbcqj.heic",
+          "type": "photo",
+          "caption": "",
+          "key": "1777789958222-c6dbcqj.heic"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777789958729-6wd3rlb.heic",
+          "type": "photo",
+          "caption": "",
+          "key": "1777789958729-6wd3rlb.heic"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777789961516-73f2gin.mov",
+          "type": "video",
+          "caption": "",
+          "key": "1777789961516-73f2gin.mov"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777789962689-kbym373.heic",
+          "type": "photo",
+          "caption": "",
+          "key": "1777789962689-kbym373.heic"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777789963320-npxy3li.heic",
+          "type": "photo",
+          "caption": "",
+          "key": "1777789963320-npxy3li.heic"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777789963812-1f0er0u.heic",
+          "type": "photo",
+          "caption": "",
+          "key": "1777789963812-1f0er0u.heic"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777789964248-mby1aft.heic",
+          "type": "photo",
+          "caption": "",
+          "key": "1777789964248-mby1aft.heic"
+        }
+      ],
+      "links": []
+    },
+    {
       "id": "6f1c479d-ca41-41cb-8ae4-5c62a4bccb7d",
       "date": "2025-09-13",
       "title": "Climbed Skierfe Peak",
