@@ -52,6 +52,24 @@ function render() {
       <div class="year-label">${year}</div>
       ${byYear[year].map(renderEvent).join('')}
     </div>`).join('');
+
+  initCarousels();
+}
+
+function initCarousels() {
+  document.querySelectorAll('.event-media').forEach(carousel => {
+    const dots = carousel.nextElementSibling;
+    if (!dots || !dots.classList.contains('media-dots')) return;
+    const dotEls = dots.querySelectorAll('.dot');
+    const items = carousel.querySelectorAll('img, video');
+    if (!items.length) return;
+
+    carousel.addEventListener('scroll', () => {
+      const itemWidth = carousel.scrollWidth / items.length;
+      const idx = Math.min(Math.round(carousel.scrollLeft / itemWidth), items.length - 1);
+      dotEls.forEach((d, i) => d.classList.toggle('dot-active', i === idx));
+    }, { passive: true });
+  });
 }
 
 document.getElementById('year-filter').addEventListener('change', function () {
@@ -73,7 +91,8 @@ function renderEvent(ev) {
     dateRangeHtml = `<span class="event-range">${sameMonth ? `${day}–${endDay} ${month}` : `${day} ${month} – ${endDay} ${endMonth}`}</span>`;
   }
 
-  const mediaHtml = (ev.media || [])
+  const media = ev.media || [];
+  const mediaHtml = media
     .map(m => {
       if (m.type === 'video') {
         return `<video src="${h(m.url)}" muted playsinline preload="metadata" title="${h(m.caption || '')}" onloadedmetadata="this.currentTime=0.1" onclick="openLightbox('video','${h(m.url)}')"></video>`;
@@ -81,6 +100,9 @@ function renderEvent(ev) {
       return `<img src="${h(m.url)}" alt="${h(m.caption || ev.title)}" loading="lazy" onclick="openLightbox('image','${h(m.url)}')">`;
     })
     .join('');
+  const dotsHtml = media.length > 1
+    ? `<div class="media-dots">${media.map((_, i) => `<span class="dot${i === 0 ? ' dot-active' : ''}"></span>`).join('')}</div>`
+    : '';
 
   const linksHtml = (ev.links || [])
     .filter(l => l.url)
@@ -98,7 +120,7 @@ function renderEvent(ev) {
         <div class="event-title">${h(ev.title)}</div>
         ${ev.location ? `<div class="event-location">📍 ${h(ev.location)}</div>` : ''}
         ${ev.description ? `<div class="event-description">${h(ev.description)}</div>` : ''}
-        ${mediaHtml ? `<div class="event-media">${mediaHtml}</div>` : ''}
+        ${mediaHtml ? `<div class="event-media">${mediaHtml}</div>${dotsHtml}` : ''}
         ${linksHtml ? `<div class="event-links">${linksHtml}</div>` : ''}
       </div>
     </div>`;

@@ -250,6 +250,36 @@ nav {
 .event-media img:hover,
 .event-media video:hover { opacity: 0.88; }
 
+/* Media dots */
+.media-dots {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  padding: 0.3rem 0 0.4rem;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.dot.dot-active {
+  background: var(--text);
+  transform: scale(1.25);
+}
+
+@media (max-width: 600px) {
+  .event-media img,
+  .event-media video {
+    flex: 0 0 100%;
+    height: 65vw;
+  }
+}
+
 /* Links */
 .event-links {
   display: flex;
