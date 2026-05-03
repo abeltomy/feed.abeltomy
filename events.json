@@ -1,6 +1,53 @@
 {
   "events": [
     {
+      "id": "d6999f12-5e01-4068-8772-e064f4322be7",
+      "date": "2025-12-14",
+      "endDate": "2025-12-20",
+      "title": "Karthik's Bachelor Party",
+      "location": "Thailand",
+      "description": "",
+      "media": [
+        {
+          "url": "https://feed.abeltomy.com/media/1777792446702-aa9uhq9.jpg",
+          "type": "photo",
+          "caption": "Fruit Seller Abel Khao San Road",
+          "key": "1777792446702-aa9uhq9.jpg"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777792453377-yrroyg7.mov",
+          "type": "video",
+          "caption": "",
+          "key": "1777792453377-yrroyg7.mov"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777792454562-e4aj88m.jpg",
+          "type": "photo",
+          "caption": "",
+          "key": "1777792454562-e4aj88m.jpg"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777792455198-ea8zvyp.jpg",
+          "type": "photo",
+          "caption": "",
+          "key": "1777792455198-ea8zvyp.jpg"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777792455699-pruyf66.jpg",
+          "type": "photo",
+          "caption": "",
+          "key": "1777792455699-pruyf66.jpg"
+        },
+        {
+          "url": "https://feed.abeltomy.com/media/1777792456257-aj8qc68.jpg",
+          "type": "photo",
+          "caption": "",
+          "key": "1777792456257-aj8qc68.jpg"
+        }
+      ],
+      "links": []
+    },
+    {
       "id": "6f1c479d-ca41-41cb-8ae4-5c62a4bccb7d",
       "date": "2025-09-13",
       "title": "Climbed Skierfe Peak",
