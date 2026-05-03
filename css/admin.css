@@ -256,6 +256,32 @@
 .status-ok  { color: #4a8a4a; }
 .status-err { color: #c05050; }
 
+.progress-track {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--text);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.15s;
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+.upload-zone.compressing {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 /* Admin event list */
 .admin-event {
   padding: 1rem 0;

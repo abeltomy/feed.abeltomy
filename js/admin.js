@@ -92,6 +92,7 @@ function cancelEdit() {
   renderPreviews();
   renderLinks();
   setStatus('');
+  setProgress(null);
 }
 
 document.getElementById('cancel-btn').addEventListener('click', cancelEdit);
@@ -149,16 +150,25 @@ document.getElementById('event-form').addEventListener('submit', async e => {
 
   try {
     // Upload any pending local files
+    const pending = mediaItems.filter(i => i.file);
+    const total = pending.length;
+    let done = 0;
+    if (total) setProgress(0, `Uploading 1 of ${total}…`);
+
     for (const item of mediaItems) {
       if (item.file) {
-        const { url, key } = await uploadFile(item.file);
+        const { url, key } = await uploadFile(item.file, p => {
+          setProgress((done + p) / total, `Uploading ${done + 1} of ${total}…`);
+        });
         item.url = url;
         item.key = key;
         delete item.file;
-        // revoke blob URL
         if (item._blobUrl) { URL.revokeObjectURL(item._blobUrl); delete item._blobUrl; }
+        done++;
+        if (done < total) setProgress(done / total, `Uploading ${done + 1} of ${total}…`);
       }
     }
+    setProgress(null);
 
     const endDate = document.getElementById('ev-end-date').value;
     const ev = {
@@ -192,12 +202,26 @@ document.getElementById('event-form').addEventListener('submit', async e => {
 
 // ── API helpers ───────────────────────────────────────────────────────────────
 
-async function uploadFile(file) {
-  const form = new FormData();
-  form.append('file', file);
-  const res = await fetch(`${API}/upload`, { method: 'POST', body: form });
-  if (!res.ok) throw new Error(`Upload failed (${res.status})`);
-  return res.json(); // { url, key }
+function uploadFile(file, onProgress) {
+  return new Promise((resolve, reject) => {
+    const form = new FormData();
+    form.append('file', file);
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${API}/upload`);
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total);
+    };
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try { resolve(JSON.parse(xhr.responseText)); }
+        catch { reject(new Error('Invalid response')); }
+      } else {
+        reject(new Error(`Upload failed (${xhr.status})`));
+      }
+    };
+    xhr.onerror = () => reject(new Error('Network error'));
+    xhr.send(form);
+  });
 }
 
 async function saveEvents() {
@@ -236,7 +260,9 @@ uploadZone.addEventListener('drop', async e => {
 async function addMediaItem(file) {
   const isVideo = file.type.startsWith('video/') || /\.(mp4|mov|webm|avi)$/i.test(file.name);
   if (!isVideo) {
+    uploadZone.classList.add('compressing');
     try { file = await processImage(file); } catch { /* use original on any error */ }
+    uploadZone.classList.remove('compressing');
   }
   const type    = isVideo ? 'video' : 'photo';
   const blobUrl = URL.createObjectURL(file);
@@ -337,6 +363,14 @@ function setStatus(msg, type) {
   const el = document.getElementById('form-status');
   el.textContent = msg;
   el.className   = type === 'ok' ? 'status-ok' : type === 'err' ? 'status-err' : '';
+}
+
+function setProgress(pct, label) {
+  const wrap = document.getElementById('progress-wrap');
+  if (pct == null) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+  document.getElementById('progress-fill').style.width = `${Math.round(pct * 100)}%`;
+  document.getElementById('progress-label').textContent = label || '';
 }
 
 function h(str) {
