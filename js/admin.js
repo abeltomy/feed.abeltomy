@@ -272,8 +272,8 @@ async function addMediaItem(file) {
     try {
       file = await convertHeic(file);
       setStatus('');
-    } catch (e) {
-      setStatus('Could not convert HEIC: ' + e.message, 'err');
+    } catch {
+      setStatus('HEIC not supported in this browser — open admin in Safari, or export photos as JPEG first.', 'err');
       return;
     }
   }
@@ -300,27 +300,40 @@ async function convertHeic(file) {
   return new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
 }
 
-function tryNativeDecode(file) {
+async function tryNativeDecode(file) {
+  const toJpeg = (canvas, name) => new Promise(resolve =>
+    canvas.toBlob(b => resolve(b ? new File([b], name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' }) : null), 'image/jpeg', 0.82)
+  );
+
+  const scaleCanvas = (source, w, h) => {
+    const MAX = 1920;
+    if (w > MAX || h > MAX) {
+      if (w >= h) { h = Math.round(h * MAX / w); w = MAX; }
+      else        { w = Math.round(w * MAX / h); h = MAX; }
+    }
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    c.getContext('2d').drawImage(source, 0, 0, w, h);
+    return c;
+  };
+
+  // createImageBitmap: uses browser's native codec pipeline directly
+  try {
+    const bm = await createImageBitmap(file);
+    const canvas = scaleCanvas(bm, bm.width, bm.height);
+    bm.close();
+    const result = await toJpeg(canvas, file.name);
+    if (result) return result;
+  } catch {}
+
+  // img element fallback
   return new Promise(resolve => {
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
     img.onload = () => {
       URL.revokeObjectURL(url);
-      const MAX = 1920;
-      let { naturalWidth: w, naturalHeight: h } = img;
-      if (w > MAX || h > MAX) {
-        if (w >= h) { h = Math.round(h * MAX / w); w = MAX; }
-        else        { w = Math.round(w * MAX / h); h = MAX; }
-      }
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      canvas.toBlob(blob => {
-        resolve(blob
-          ? new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' })
-          : null);
-      }, 'image/jpeg', 0.82);
+      toJpeg(scaleCanvas(img, img.naturalWidth, img.naturalHeight), file.name).then(resolve);
     };
     img.src = url;
   });
