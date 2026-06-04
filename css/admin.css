@@ -277,11 +277,6 @@
   margin-top: 0.3rem;
 }
 
-.upload-zone.compressing {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
 /* Admin event list */
 .admin-event {
   padding: 1rem 0;
@@ -330,23 +325,14 @@
   transition: all 0.15s;
 }
 
-.btn-edit {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-}
-
-.btn-edit:hover {
-  border-color: var(--text-muted);
-  color: var(--text);
-}
-
+.btn-edit,
 .btn-archive {
   background: none;
   border: 1px solid var(--border);
   color: var(--text-muted);
 }
 
+.btn-edit:hover,
 .btn-archive:hover {
   border-color: var(--text-muted);
   color: var(--text);

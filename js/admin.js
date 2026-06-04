@@ -40,7 +40,7 @@ function renderList() {
       return `
         <div class="admin-event${archived}">
           <div>
-            <div class="admin-event-meta">${dateStr} &middot; ${h(ev.category)}${ev.archived ? ' &middot; archived' : ''}</div>
+            <div class="admin-event-meta">${dateStr}${ev.archived ? ' &middot; archived' : ''}</div>
             <div class="admin-event-title">${h(ev.title)}</div>
           </div>
           <div class="admin-event-actions">
@@ -86,7 +86,6 @@ function cancelEdit() {
   document.getElementById('submit-btn').textContent   = 'Add Event';
   document.getElementById('cancel-btn').style.display = 'none';
   document.getElementById('event-form').reset();
-  document.getElementById('ev-end-date').value = '';
   mediaItems = [];
   linkItems  = [];
   renderPreviews();
@@ -159,7 +158,7 @@ document.getElementById('event-form').addEventListener('submit', async e => {
         let fileToUpload = item.file;
         if (!isVideo) {
           setStatus(`Compressing ${done + 1} of ${total}…`);
-          try { fileToUpload = await processImage(item.file); } catch { /* use original */ }
+          try { fileToUpload = await compressImage(item.file); } catch { /* use original */ }
         }
         setProgress(done / total, `Uploading ${done + 1} of ${total}…`);
         setStatus('Saving…');
@@ -282,11 +281,6 @@ async function addMediaItem(file) {
   const blobUrl = URL.createObjectURL(file);
   mediaItems.push({ file, url: blobUrl, _blobUrl: blobUrl, type, caption: '' });
   renderPreviews();
-}
-
-async function processImage(file) {
-  // HEIC already converted to JPEG in addMediaItem — just compress
-  return await compressImage(file);
 }
 
 async function convertHeic(file) {
