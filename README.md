@@ -1,4 +1,4 @@
-# lifelog - Personal Timeline Feed
+# Lifelog - Personal Timeline Feed
 
 A personal feed for logging life events — photos, videos, dark mode, and a private admin panel. No framework, no database, runs entirely on free infrastructure.
 
