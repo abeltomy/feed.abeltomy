@@ -370,8 +370,19 @@ function renderPreviews() {
         <input class="preview-caption" type="text" placeholder="Caption…"
                value="${h(item.caption)}"
                oninput="mediaItems[${i}].caption = this.value">
+        <div class="preview-reorder">
+          <button type="button" class="preview-move" onclick="moveMedia(${i},-1)" ${i === 0 ? 'disabled' : ''} title="Move left">&#8249;</button>
+          <button type="button" class="preview-move" onclick="moveMedia(${i},1)" ${i === mediaItems.length - 1 ? 'disabled' : ''} title="Move right">&#8250;</button>
+        </div>
       </div>`)
     .join('');
+}
+
+function moveMedia(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= mediaItems.length) return;
+  [mediaItems[i], mediaItems[j]] = [mediaItems[j], mediaItems[i]];
+  renderPreviews();
 }
 
 function removeMedia(i) {

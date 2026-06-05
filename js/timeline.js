@@ -56,9 +56,17 @@ function render() {
   initCarousels();
 }
 
+function scrollCarousel(btn, dir) {
+  const carousel = btn.closest('.media-wrap').querySelector('.event-media');
+  const items = carousel.querySelectorAll('img, video');
+  const itemWidth = carousel.scrollWidth / items.length;
+  carousel.scrollBy({ left: dir * itemWidth, behavior: 'smooth' });
+}
+
 function initCarousels() {
   document.querySelectorAll('.event-media').forEach(carousel => {
-    const dots = carousel.nextElementSibling;
+    const wrap = carousel.closest('.media-wrap');
+    const dots = wrap ? wrap.nextElementSibling : null;
     if (!dots || !dots.classList.contains('media-dots')) return;
     const dotEls = dots.querySelectorAll('.dot');
     const items = carousel.querySelectorAll('img, video');
@@ -120,7 +128,7 @@ function renderEvent(ev) {
         <div class="event-title">${h(ev.title)}</div>
         ${ev.location ? `<div class="event-location">📍 ${h(ev.location)}</div>` : ''}
         ${ev.description ? `<div class="event-description">${h(ev.description)}</div>` : ''}
-        ${mediaHtml ? `<div class="event-media">${mediaHtml}</div>${dotsHtml}` : ''}
+        ${mediaHtml ? `<div class="media-wrap">${media.length > 1 ? `<button class="media-arrow media-arrow--prev" onclick="scrollCarousel(this,-1)" aria-label="Previous">&#8249;</button>` : ''}<div class="event-media">${mediaHtml}</div>${media.length > 1 ? `<button class="media-arrow media-arrow--next" onclick="scrollCarousel(this,1)" aria-label="Next">&#8250;</button>` : ''}</div>${dotsHtml}` : ''}
         ${linksHtml ? `<div class="event-links">${linksHtml}</div>` : ''}
       </div>
     </div>`;

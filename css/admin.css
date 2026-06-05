@@ -140,6 +140,26 @@
   outline: none;
 }
 
+.preview-reorder {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.1rem;
+}
+
+.preview-move {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.1rem 0.25rem;
+  transition: color 0.15s;
+}
+
+.preview-move:hover:not(:disabled) { color: var(--text); }
+.preview-move:disabled { opacity: 0.25; cursor: default; }
+
 .preview-remove {
   position: absolute;
   top: 3px;

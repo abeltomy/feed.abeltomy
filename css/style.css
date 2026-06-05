@@ -219,6 +219,40 @@ nav {
 }
 
 /* Media — horizontal swipe carousel */
+.media-wrap {
+  position: relative;
+}
+
+.media-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.45);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.media-wrap:hover .media-arrow { opacity: 1; }
+.media-arrow--prev { left: 6px; }
+.media-arrow--next { right: 6px; }
+
+@media (max-width: 600px) {
+  .media-arrow { opacity: 0.75; }
+}
+
 .event-media {
   display: flex;
   gap: 0.4rem;
