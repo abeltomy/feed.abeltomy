@@ -359,10 +359,14 @@ function compressImage(file) {
   });
 }
 
+let _dragSrcIndex = null;
+
 function renderPreviews() {
-  document.getElementById('upload-previews').innerHTML = mediaItems
+  const container = document.getElementById('upload-previews');
+  container.innerHTML = mediaItems
     .map((item, i) => `
-      <div class="upload-preview-item">
+      <div class="upload-preview-item" draggable="true" data-index="${i}">
+        <div class="preview-drag-handle" title="Drag to reorder">&#8759;</div>
         ${item.type === 'video'
           ? `<video src="${item.url}" muted></video>`
           : `<img src="${item.url}" alt="">`}
@@ -376,6 +380,34 @@ function renderPreviews() {
         </div>
       </div>`)
     .join('');
+
+  container.querySelectorAll('.upload-preview-item').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      _dragSrcIndex = +el.dataset.index;
+      el.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    el.addEventListener('dragend', () => {
+      el.classList.remove('dragging');
+      container.querySelectorAll('.upload-preview-item').forEach(n => n.classList.remove('drag-over'));
+    });
+    el.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      container.querySelectorAll('.upload-preview-item').forEach(n => n.classList.remove('drag-over'));
+      el.classList.add('drag-over');
+    });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', e => {
+      e.preventDefault();
+      const destIndex = +el.dataset.index;
+      if (_dragSrcIndex !== null && _dragSrcIndex !== destIndex) {
+        const moved = mediaItems.splice(_dragSrcIndex, 1)[0];
+        mediaItems.splice(destIndex, 0, moved);
+        renderPreviews();
+      }
+    });
+  });
 }
 
 function moveMedia(i, dir) {

@@ -160,6 +160,40 @@
 .preview-move:hover:not(:disabled) { color: var(--text); }
 .preview-move:disabled { opacity: 0.25; cursor: default; }
 
+.preview-drag-handle {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  background: rgba(0, 0, 0, 0.45);
+  color: white;
+  border-radius: 3px;
+  width: 18px;
+  height: 18px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  line-height: 1;
+  padding: 0;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.upload-preview-item:hover .preview-drag-handle {
+  opacity: 1;
+}
+
+.upload-preview-item.dragging {
+  opacity: 0.4;
+  outline: 2px dashed var(--text-muted);
+}
+
+.upload-preview-item.drag-over {
+  outline: 2px solid var(--text);
+}
+
 .preview-remove {
   position: absolute;
   top: 3px;

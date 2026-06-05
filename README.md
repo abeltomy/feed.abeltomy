@@ -2,6 +2,8 @@
 
 A personal feed for logging life events — photos, videos, dark mode, and a private admin panel. No framework, no database, runs entirely on free infrastructure.
 
+![feed.abeltomy.com](Screenshot%202026-06-05%20120314.png)
+
 ---
 
 ## How it works
